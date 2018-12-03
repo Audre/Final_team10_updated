@@ -138,14 +138,14 @@ $ok_to_purchase = False;
             } else {
                 echo "<span>";
                 echo "<select class='selectContainer' name='quant'>";
-                echo "<option value='' selected>Quantity</option>";
+                echo "<option value='1' selected>1</option>";
                 $amount_to_sell = 0;
                 if ($storageAmount > 5) {
                     $amount_to_sell = 5;
                 } else {
                     $amount_to_sell = $storageAmount;
                 }
-                for ($options = 1; $options <= $amount_to_sell; $options++) {
+                for ($options = 2; $options <= $amount_to_sell; $options++) {
                     echo "<option name='" . $options ."' value='" . $options . "'>" . $options . "</option>";
                 }
                 echo "</select></span>";

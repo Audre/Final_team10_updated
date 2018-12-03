@@ -61,8 +61,8 @@ if (isset($_POST["submit"])) {
     }
     if (count($error) == 0) {
         $password = password_hash($password, PASSWORD_DEFAULT);
-        $insert_query = "INSERT INTO users (first_name, last_name, email, password) 
-                  VALUES('$first_name', '$last_name', '$email', '$password')";
+        $insert_query = "INSERT INTO users (first_name, last_name, email, password, giftcard_balance) 
+                  VALUES('$first_name', '$last_name', '$email', '$password', 500)";
         $stmt2 = $conn->prepare($insert_query);
         $result2 = $stmt2->execute();
         if ($result2) {
@@ -71,9 +71,9 @@ if (isset($_POST["submit"])) {
             $_SESSION["last_name"] = $last_name;
             $_SESSION["userID"] = $result2["userID"];
             $_SESSION["giftcard_balance"] = $result2["giftcard_balance"];
-            $_SESSION["success"] = "You are now logged in.";
-            $_SESSION["logged_in"] = true;
-            header('Location: account.php');
+            //$_SESSION["success"] = "You are now logged in.";
+            //$_SESSION["logged_in"] = True;
+            header('Location: login.php');
         }
     }
 }

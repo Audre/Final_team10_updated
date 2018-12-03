@@ -197,16 +197,20 @@ if (!isset($_SESSION["logged_in"])) {
                                         echo "<div class='col-lg-4 col-md-4 col-sm-4 col-xs-12 w3-opacity'>Price: " . $item["price"] .  "</div>";
                                         echo "</div>";
                                         echo "<br/>";
+
                                         $total_cost += $item["price"];
 
                                         $products = [];
                                     }
+
                                     echo "<p class='account-total w3-opacity'>Total Price: " . $total_cost . "</p>";
                                     echo "<hr>";
                                     echo "</div>";
+
                                 }
+
                             }
-                            echo "</div>";
+
 
                         } else {
                             echo "<div class=\"w3-container\">";
@@ -214,10 +218,15 @@ if (!isset($_SESSION["logged_in"])) {
                             echo "<hr>";
                             echo "</div>";
                             echo "</div>";
+                            echo "</div>";
+                            echo "</div>";
+
 
                         }
 
                     }
+                    echo "</div>";
+                    echo "<div>";
                     echo "<div class=\"w3-container w3-card w3-white w3-margin-bottom\">";
                     echo "<h2 class=\"w3-text-grey w3-padding-16\"><i class=\"fa fa-credit-card fa-fw w3-margin-right w3-xxlarge w3-text-teal\"></i>Inventory</h2>";
 
@@ -244,6 +253,7 @@ if (!isset($_SESSION["logged_in"])) {
 
                     echo "</div>";
 
+                    echo "</div>";
                     echo "</div>";
 
 
@@ -384,7 +394,7 @@ if (!isset($_SESSION["logged_in"])) {
                                 <div class="modal-body">
                                     <br/>
                                     <form method="post" id="insert_form">
-                                        <label for="product" >Product ID: <input id="productID" name="productID" type="number" max="5"/></label>
+                                        <label for="product" >Product ID: <input id="productID" name="productID" type="number" max="13"/></label>
                                         <label for="amount">Amount: <input id="unitsInStorage" type="number" name="unitsInStorage"/> </label>
 
                                         <button type="submit" id="add" name="add_to_inventory" value="" class="btn btn-checkout">Add to Inventory</button>
