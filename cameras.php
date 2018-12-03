@@ -109,7 +109,7 @@ $ok_to_purchase = False;
             echo "<img class=\"product-thumbnail img-responsive\" src=\"images/products/" . $row["imagePath"] . "\"></div>";
             $description = $row["description"];
             echo "<div class=\"col-lg-6 col-md-6 col-sm-6 col-xs-12 \">";
-            echo "<p style='padding-top:75px'>". $description . "</p><br/>";
+            echo "<p class='product-padding'>". $description . "</p><br/>";
             $rating = $row["rating"];
             for ($stars = 0; $stars < $rating; $stars++) {
                 echo "<span class='fa fa-star checked'></span>";

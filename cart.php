@@ -152,12 +152,12 @@ session_start();
         <table class="tbl-cart" cellpadding="10" cellspacing="1">
             <tbody>
             <tr>
-                <th style="text-align:center;">Name</th>
+                <th class="text-center">Name</th>
                 <th style="text-align:left;">Product ID</th>
-                <th style="text-align:center;" width="5%">Quantity</th>
-                <th style="text-align:center;" width="10%">Unit Price</th>
-                <th style="text-align:center;" width="10%">Price</th>
-                <th style="text-align:center;" width="5%">Remove</th>
+                <th class="text-center" width="5%">Quantity</th>
+                <th class="text-center" width="10%">Unit Price</th>
+                <th class="text-center" width="10%">Price</th>
+                <th class="text-center" width="5%">Remove</th>
             </tr>
             <?php
             foreach ($_SESSION["cart"] as $item) {
@@ -167,10 +167,10 @@ session_start();
                     <td><img src="images/products/<?php echo $item["image"]; ?>" class="cart-item-image"/><?php echo $item["name"]; ?>
                     </td>
                     <td><?php echo $item["productID"]; ?></td>
-                    <td style="text-align:center;"><?php echo $item["quantity"]; ?></td>
-                    <td style="text-align:center;"><?php echo "\xf0\x9f\x8d\x8d " . $item["price"]; ?></td>
-                    <td style="text-align:center;"><?php echo "\xf0\x9f\x8d\x8d " . number_format($item_price, 2); ?></td>
-                    <td style="text-align:center;"><a href="cart.php?action=remove&id=<?php echo $item["productID"]; ?>"
+                    <td class="text-center" "><?php echo $item["quantity"]; ?></td>
+                    <td class="text-center"><?php echo "\xf0\x9f\x8d\x8d " . $item["price"]; ?></td>
+                    <td class="text-center"><?php echo "\xf0\x9f\x8d\x8d " . number_format($item_price, 2); ?></td>
+                    <td class="text-center"><a href="cart.php?action=remove&id=<?php echo $item["productID"]; ?>"
                                                       class="btn btn-checkout"><i class="fa fa-trash"></i> Remove</a></td>
                 </tr>
                 <?php

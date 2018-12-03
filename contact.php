@@ -188,7 +188,7 @@ session_start();
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-body">
-                            <div id="googleMap" style="height:475px;width:100%;"></div>
+                            <div id="googleMap" ></div>
                             <script>
                                 function myMap() {
                                     var myCenter = new google.maps.LatLng(42.25584, -85.64177);

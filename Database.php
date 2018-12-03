@@ -1,11 +1,11 @@
 <?php
 
 // Connection variables
-$dbuser = 'final10';
-$dbpassword = 'webTechFinal10';
-$dbhost = '198.71.225.56:3306';
+$dbuser = 'root';
+$dbpassword = '';
+$dbhost = 'localhost';
 $charset = 'utf8mb4';
-$dsn = 'mysql:host=198.71.225.56:3306;dbname=accounts;charset=utf8mb4;';
+$dsn = 'mysql:host=localhost;dbname=accounts;charset=utf8mb4;';
 
 try {
 //    $pdo = new PDO($dsn, $dbuser, $dbpassword);

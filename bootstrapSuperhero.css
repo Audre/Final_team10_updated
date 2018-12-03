@@ -9099,3 +9099,12 @@ h3, label,h4{
 .low-inventory {
     font-size: large;
 }
+
+#googleMap {
+    height:475px;
+    width:100%;
+}
+
+.product-padding {
+    padding-top:75px;
+}
