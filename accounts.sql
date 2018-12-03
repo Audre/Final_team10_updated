@@ -142,8 +142,7 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`userID`, `first_name`, `last_name`, `email`, `password`, `giftcard_balance`) VALUES
 (1, 'Audre', 'Staffen', 'audre', '$2y$10$tR20FAwluDeFWBePNSJ6TeuznRD2l9Lg.pbxbsgk8zjVh8B7K86uS', -1),
 (2, 'admin', 'admin', 'admin', '$2y$10$tv8steohMoNKgv.9hAIuoe3CsGPgkJMWWxfIcCbN6sJ5X.Fz0CUo6', 500),
-(3, 'lkfjw', 'jkflw', 'a', '$2y$10$RG2xrJW48TTVafsPa43gIuTfy1WH5j83aaDL2uaINwuQC3MFQuExu', 500),
-(4, 'Audre', 'Staffen', 'audre', '$2y$10$Z48jnAjTD1qiaefZZ2HbgePr4ipdDvASF.GGqrH9ERfNWSrPwJbum', 500);
+(3, 'lkfjw', 'jkflw', 'a', '$2y$10$RG2xrJW48TTVafsPa43gIuTfy1WH5j83aaDL2uaINwuQC3MFQuExu', 500);
 
 --
 -- Indexes for dumped tables
