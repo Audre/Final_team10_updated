@@ -1,6 +1,9 @@
 <?php
 require_once("Database.php");
 session_start();
+add_to_cart($conn);
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -110,17 +113,19 @@ session_start();
                 $description = $row["description"];
                 echo "<div class=\"col-lg-6 col-md-6 col-sm-6 col-xs-12 \">";
                 echo "<p class='product-padding'>". $description . "</p><br/>";
-                echo "<span class='fa fa-star checked'></span>";
-                echo "<span class='fa fa-star checked'></span>";
-                echo "<span class='fa fa-star checked'></span>";
-                echo "<span class='fa fa-star checked'></span>";
-                echo "<span class='fa fa-star unchecked'></span>";
+                $rating = $row["rating"];
+                for ($stars = 0; $stars < $rating; $stars++) {
+                    echo "<span class='fa fa-star checked'></span>";
+                }
+                for ($no_stars = 0; $no_stars < (5 - $rating); $no_stars++) {
+                    echo "<span class='fa fa-star unchecked'></span>";
+                }
                 $storageAmount = $row["unitsInStorage"];
                 $price = number_format($row["price"], 2);
                 echo "<span><h3>\xf0\x9f\x8d\x8d" . $price . "</h3>";
                 echo "<p>Total Items: ". $storageAmount . "</p>";
                 $productID = $row["productID"];
-                echo "<form action='cameras.php?action=add&id=" . $productID . "&quant=' method='POST'>";
+                echo "<form action='memorycard.php?action=add&id=" . $productID . "&quant=' method='POST'>";
                 if ($storageAmount == 0) {
                     echo "<span>";
                     echo "<select class='selectContainer' name='quant'>";
@@ -130,7 +135,7 @@ session_start();
                 } else {
                     echo "<span>";
                     echo "<select class='selectContainer' name='quant'>";
-                    echo "<option value='' selected>1</option>";
+                    echo "<option value='1' selected>1</option>";
                     $amount_to_sell = 0;
                     if ($storageAmount > 5) {
                         $amount_to_sell = 5;
@@ -155,53 +160,54 @@ session_start();
 
     <?php
 
-    $ok_to_purchase = True;
-    if (!empty($_GET["action"])) {
-        switch ($_GET["action"]) {
-            case "add":
-                if (!empty($_POST["quant"])) {
-                    $query = "SELECT * FROM products WHERE productID=" . $_GET["id"];
-                    $stmt = $conn->prepare($query);
-                    $num = $stmt->execute();
-                    if ($num) {
-                        $quantity = $_POST["quant"];
-                        $id = $_GET["id"];
-                        $productByCode = $stmt->fetch();
-                        $quantity_in_database = $productByCode["unitsInStorage"];
-                        if ($quantity > $quantity_in_database) {
-                            $ok_to_purchase = False;
-                        } else {
-                            $quantity_in_database -= $quantity;
-                            $update_quantity_query = "UPDATE products SET unitsInStorage=" . $quantity_in_database . " WHERE productID=" . $id;
-                            if ($conn->query($update_quantity_query) === TRUE) {
-                            }
-                            $itemArray = array($productByCode["productID"] => array('quantity' => $quantity, 'image' => $productByCode["thumbnail"], 'price' => $productByCode["price"], 'productID' => $id, 'name' => $productByCode['name']));
-                            if (!empty($_SESSION["cart"])) {
-                                if (array_key_exists($id, $_SESSION["cart"])) {
-                                    $output = $_SESSION["cart"][$id];
-                                    foreach ($_SESSION["cart"] as $key => $value) {
-                                        if ($id == $key) {
-                                            if (empty($_SESSION["cart"][$key]["quantity"])) {
-                                                $_SESSION["cart"][$key]["quantity"] = 0;
+    function add_to_cart($conn)
+    {
+        if (!empty($_GET["action"])) {
+            switch ($_GET["action"]) {
+                case "add":
+                    if (!empty($_POST["quant"])) {
+                        $query = "SELECT * FROM products WHERE productID=" . $_GET["id"];
+                        $stmt = $conn->prepare($query);
+                        $num = $stmt->execute();
+                        if ($num) {
+                            $quantity = $_POST["quant"];
+                            $id = $_GET["id"];
+                            $productByCode = $stmt->fetch();
+                            $quantity_in_database = $productByCode["unitsInStorage"];
+                            if ($quantity > $quantity_in_database) {
+                                $ok_to_purchase = False;
+                            } else {
+                                $quantity_in_database -= $quantity;
+                                $update_quantity_query = "UPDATE products SET unitsInStorage=" . $quantity_in_database . " WHERE productID=" . $id;
+                                if ($conn->query($update_quantity_query) === TRUE) {
+                                }
+                                $itemArray = array($productByCode["productID"] => array('quantity' => $quantity, 'image' => $productByCode["thumbnail"], 'price' => $productByCode["price"], 'productID' => $id, 'name' => $productByCode['name']));
+                                if (!empty($_SESSION["cart"])) {
+                                    if (array_key_exists($id, $_SESSION["cart"])) {
+                                        $output = $_SESSION["cart"][$id];
+                                        foreach ($_SESSION["cart"] as $key => $value) {
+                                            if ($id == $key) {
+                                                if (empty($_SESSION["cart"][$key]["quantity"])) {
+                                                    $_SESSION["cart"][$key]["quantity"] = 0;
+                                                }
+                                                $_SESSION["cart"][$key]["quantity"] += $quantity;
                                             }
-                                            $_SESSION["cart"][$key]["quantity"] += $quantity;
                                         }
+                                    } else {
+                                        $_SESSION["cart"] = $_SESSION["cart"] + $itemArray;
                                     }
                                 } else {
-                                    $_SESSION["cart"] = $_SESSION["cart"] + $itemArray;
+                                    $_SESSION["cart"] = $itemArray;
                                 }
-                            } else {
-                                $_SESSION["cart"] = $itemArray;
                             }
+
                         }
-
                     }
-                }
-                break;
+                    break;
+            }
         }
+        unset($_GET['id']);
     }
-    unset($_GET['id']);
-
     ?>
 
 

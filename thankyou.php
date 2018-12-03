@@ -108,7 +108,7 @@ session_start();
 
                         $productID = $item["productID"];
                         $quantity = $item["quantity"];
-                        $price = $item["price"];
+                        $price = $item["price"] * $quantity;
                         $now = new DateTime(null, new DateTimeZone("America/New_York"));
                         $date = $now->format('Y-m-d');
                         $gc_query = "SELECT giftcard_balance FROM users WHERE userID=" . $userID;

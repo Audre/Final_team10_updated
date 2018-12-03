@@ -1,8 +1,11 @@
 <?php
 require_once("Database.php");
 session_start();
-$ok_to_purchase = False;
+
+add_to_cart($conn);
+
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -161,57 +164,6 @@ $ok_to_purchase = False;
     </div>
     </div>
 
-    <?php
-
-    $ok_to_purchase = True;
-    if (!empty($_GET["action"])) {
-        switch ($_GET["action"]) {
-            case "add":
-                if (!empty($_POST["quant"])) {
-                    $query = "SELECT * FROM products WHERE productID=" . $_GET["id"];
-                    $stmt = $conn->prepare($query);
-                    $num = $stmt->execute();
-                    if ($num) {
-                        $quantity = $_POST["quant"];
-                        $id = $_GET["id"];
-                        $productByCode = $stmt->fetch();
-                        $quantity_in_database = $productByCode["unitsInStorage"];
-                        if ($quantity > $quantity_in_database) {
-                            $ok_to_purchase = False;
-                        } else {
-                            $quantity_in_database -= $quantity;
-                            $update_quantity_query = "UPDATE products SET unitsInStorage=" . $quantity_in_database . " WHERE productID=" . $id;
-                            if ($conn->query($update_quantity_query) === TRUE) {
-                            }
-                            $itemArray = array($productByCode["productID"] => array('quantity' => $quantity, 'image' => $productByCode["thumbnail"], 'price' => $productByCode["price"], 'productID' => $id, 'name' => $productByCode['name']));
-                            if (!empty($_SESSION["cart"])) {
-                                if (array_key_exists($id, $_SESSION["cart"])) {
-                                    $output = $_SESSION["cart"][$id];
-                                    foreach ($_SESSION["cart"] as $key => $value) {
-                                        if ($id == $key) {
-                                            if (empty($_SESSION["cart"][$key]["quantity"])) {
-                                                $_SESSION["cart"][$key]["quantity"] = 0;
-                                            }
-                                            $_SESSION["cart"][$key]["quantity"] += $quantity;
-                                        }
-                                    }
-                                } else {
-                                    $_SESSION["cart"] = $_SESSION["cart"] + $itemArray;
-                                }
-                            } else {
-                                $_SESSION["cart"] = $itemArray;
-                            }
-                        }
-
-                    }
-                }
-                break;
-        }
-    }
-    unset($_GET['id']);
-
-    ?>
-
 
 
     <div class="modal fade" id="myModal" role="dialog">
@@ -233,7 +185,56 @@ $ok_to_purchase = False;
 
         </div>
     </div>
+    <?php
+    function add_to_cart($conn)
+    {
+        if (!empty($_GET["action"])) {
+            switch ($_GET["action"]) {
+                case "add":
+                    if (!empty($_POST["quant"])) {
+                        $query = "SELECT * FROM products WHERE productID=" . $_GET["id"];
+                        $stmt = $conn->prepare($query);
+                        $num = $stmt->execute();
+                        if ($num) {
+                            $quantity = $_POST["quant"];
+                            $id = $_GET["id"];
+                            $productByCode = $stmt->fetch();
+                            $quantity_in_database = $productByCode["unitsInStorage"];
+                            if ($quantity > $quantity_in_database) {
+                                $ok_to_purchase = False;
+                            } else {
+                                $quantity_in_database -= $quantity;
+                                $update_quantity_query = "UPDATE products SET unitsInStorage=" . $quantity_in_database . " WHERE productID=" . $id;
+                                if ($conn->query($update_quantity_query) === TRUE) {
+                                }
+                                $itemArray = array($productByCode["productID"] => array('quantity' => $quantity, 'image' => $productByCode["thumbnail"], 'price' => $productByCode["price"], 'productID' => $id, 'name' => $productByCode['name']));
+                                if (!empty($_SESSION["cart"])) {
+                                    if (array_key_exists($id, $_SESSION["cart"])) {
+                                        $output = $_SESSION["cart"][$id];
+                                        foreach ($_SESSION["cart"] as $key => $value) {
+                                            if ($id == $key) {
+                                                if (empty($_SESSION["cart"][$key]["quantity"])) {
+                                                    $_SESSION["cart"][$key]["quantity"] = 0;
+                                                }
+                                                $_SESSION["cart"][$key]["quantity"] += $quantity;
+                                            }
+                                        }
+                                    } else {
+                                        $_SESSION["cart"] = $_SESSION["cart"] + $itemArray;
+                                    }
+                                } else {
+                                    $_SESSION["cart"] = $itemArray;
+                                }
+                            }
 
+                        }
+                    }
+                    break;
+            }
+        }
+        unset($_GET['id']);
+    }
+    ?>
 
 </main>
 
